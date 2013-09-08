@@ -29,6 +29,7 @@ int main()
  servidor.sin_family = AF_INET;         
  servidor.sin_port = htons(9005);     
  servidor.sin_addr.s_addr = INADDR_ANY;
+ bzero(&(servidor.sin_zero),8);
 
  if (bind(sock,(struct sockaddr *)&servidor,sizeof(servidor)))
  {
@@ -49,31 +50,15 @@ int main()
 		  
 		  while(1){
 			  
-			  recv(misock,datosrecibidos,sizeof(datosrecibidos),0);
+			  recv(misock,datosrecibidos,sizeof(datosrecibidos),0);                 
 			  printf("mensaje: %s\n",datosrecibidos);
-			  
-			  /*if((var1= recv(misock,datosrecibidos,sizeof(datosrecibidos),0))<0)
-			  { 
-				  perror("mensaje de error\n");
-			  }
-			  else{
-				  if(var1==0)
-				  {
-					  printf("terminando conexion\n");
-                  }
-                  else
-				  { 
-					  printf("mensaje: %s\n",datosrecibidos);
-                  }*/
-        //printf("llego el mensaje (var1 = %d)\n",var1);
-        //close(misock);
-				//} 
-		 }
+
+          		 }
 	  }
 	  else{
 		  while(1){
 			  //printf("digite su mensaje: ");
-			  scanf("%s",datosenviados); 
+			  gets(datosenviados); 
 			  if(send(misock,datosenviados,sizeof(datosenviados),0)<0){
 				  perror("envio fallido\n");
 				  close(misock);
