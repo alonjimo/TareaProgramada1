@@ -10,7 +10,7 @@
 
 int main()
 {
- int sock;
+ int sock,bytesrecibidos;
  struct sockaddr_in cliente;
  char datosenviados[2048];
  char datosrecibidos[2048];
@@ -27,7 +27,8 @@ int main()
 
  cliente.sin_family = AF_INET;         
  cliente.sin_port = htons(9005);
- cliente.sin_addr.s_addr = inet_addr("10.42.0.63"); //Conexión compu-compu
+ cliente.sin_addr.s_addr = inet_addr("172.16.1.129"); //Conexión compu-compu
+ bzero(&(cliente.sin_zero),8); 
      
 
  
@@ -46,57 +47,30 @@ int main()
   close(sock);
   exit(1);
  }
- if(fork()){
+ if(fork())
+          {
 		  
-		  while(1){
+	   while(1){
+	            recv(sock,datosrecibidos,sizeof(datosrecibidos),0);                 
+		    printf("mensaje: %s\n",datosrecibidos);
 			  
-			  recv(sock,datosrecibidos,sizeof(datosrecibidos),0);
-			  printf("mensaje: %s\n",datosrecibidos);
-			  
-			  /*if((var1= recv(misock,datosrecibidos,sizeof(datosrecibidos),0))<0)
-			  { 
-				  perror("mensaje de error\n");
-			  }
-			  else{
-				  if(var1==0)
-				  {
-					  printf("terminando conexion\n");
-                  }
-                  else
-				  { 
-					  printf("mensaje: %s\n",datosrecibidos);
-                  }*/
-        //printf("llego el mensaje (var1 = %d)\n",var1);
-        //close(misock);
-				//} 
-		 }
+		   }
 	  }
-	  else{
-		  while(1){
-			  //printf("digite su mensaje: ");
-			  scanf("%s",datosenviados); 
-			  if(send(sock,datosenviados,sizeof(datosenviados),0)<0){
-				  perror("envio fallido\n");
-				  close(sock);
-				  exit(1);
-			  }
-			  printf("enviado con exito \n");
- 
-		  }
-	  }
- /*while(1){
- 
- printf("digite su mensaje: ");
- scanf("%s",datosenviados); 
 
- if(send(sock,datosenviados,sizeof(datosenviados),0)<0)
-  {perror("envio fallido\n");
-   close(sock);
-   exit(1);
-  }
- printf("enviado con exito \n");
- 
-}*/
-//close(sock);
+ else{
+      while(1){
+	       //printf("digite su mensaje: ");
+	       gets(datosenviados); 
+	       if(send(sock,datosenviados,sizeof(datosenviados),0)<0)
+               {
+		 perror("envio fallido\n");
+		 close(sock);
+	         exit(1);
+	       }
+	       printf("enviado con exito \n");
+	      }
+
+     }
+
 return 0;
 }
