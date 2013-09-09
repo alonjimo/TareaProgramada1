@@ -41,14 +41,78 @@ void agregarcontacto()
 }
 
 
-void menu()
+
+char eliminarcontacto()
 {
+
+char contacto[15];
+char cadena[15];
+int valor;
+int valor2;
+char caden;
+int modificado = 0;
+char adena[100];
+printf("introduzca nombre del contacto a eliminar");
+scanf("%s",contacto);
+FILE *archivo;
+FILE *dest;
+archivo=fopen("Contactos.txt","r");// abre para leer
+dest = fopen ("aux.txt", "w");// archivo a modificar
+if (archivo ==NULL)
+{
+printf("\Error de apertura del archivo.\n\n");
+}
+while (!feof(archivo)){
+
+fscanf(archivo,"%[a-zA-Z],%d,%d\n",cadena,&valor,&valor2);
+if (strcmp (cadena, contacto) != 0)
+{ 
+  
+  char buffer[50];
+  char buf[50];
+  sprintf( buffer, "%d", valor );
+  strcat(cadena, ",");
+  strcat(cadena, buffer);
+  strcat(cadena, ",");
+  sprintf( buf, "%d", valor2 );
+  strcat(cadena, buf);
+  strcat(cadena, "\n");
+  fputs (cadena, dest);
+  
+
+}
+if (strcmp (cadena, contacto) == 0)
+{ printf("contacto eliminado");
+ }
+
+
+
+
+}
+fclose(archivo);
+fclose(dest);
+remove ("Contactos.txt"); //borramos el fichero de origen
+rename("aux.txt","Contactos.txt");// aca renombramos el archivo al original
+}// fin de la funcionalidad
+
+
+
+
+
+
+
+
+void menu()
+{ 
   int opc;
   while(opc != 3)
   {printf("_____________Chat lenguajes___________\n");
   printf("1)Agregar contacto.\n");
   printf("2)Enviar mensaje.\n");
-  printf("3) Salir.\n");
+  printf("3)Eliminarcontacto.\n");
+  printf("4) Salir.\n");
+  printf("5)Lista de Contactos.\n");
+  
   printf("Ingrese una opcion: ");
   scanf("%i",&opc);
   switch(opc)
@@ -60,6 +124,9 @@ void menu()
           printf("enviar mensaje\n");
           break;
      case 3:
+          eliminarcontacto();
+          break;
+     case 4:
           printf("saliendo\n");
           break;
      default: 
