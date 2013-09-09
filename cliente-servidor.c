@@ -14,7 +14,13 @@ int main()
  struct sockaddr_in cliente;
  char datosenviados[2048];
  char datosrecibidos[2048];
+ char nombrerecibido[100];
+ char nombreenviado[100];
  struct hostent *hp;
+
+ printf("digite su username: ");
+ gets(nombreenviado);
+ strcat(nombreenviado,":");
 
  sock = socket(AF_INET,SOCK_STREAM,0);
  if( sock<0)
@@ -47,19 +53,22 @@ int main()
   close(sock);
   exit(1);
  }
+
+else
+{
  if(fork())
           {
-		  
+           recv(sock,nombrerecibido,sizeof(nombrerecibido),0);	  
 	   while(1){
-	            recv(sock,datosrecibidos,sizeof(datosrecibidos),0);                 
-		    printf("mensaje: %s\n",datosrecibidos);
+	            recv(sock,datosrecibidos,sizeof(datosrecibidos),0);
+                    printf("%s",nombrerecibido);
+		    printf("%s\n",datosrecibidos);
 			  
 		   }
 	  }
 
- else{
-      while(1){
-	       //printf("digite su mensaje: ");
+ else{send(sock,nombreenviado,sizeof(nombreenviado),0);
+      while(1){	       
 	       gets(datosenviados); 
 	       if(send(sock,datosenviados,sizeof(datosenviados),0)<0)
                {
@@ -71,6 +80,6 @@ int main()
 	      }
 
      }
-
+}
 return 0;
 }
