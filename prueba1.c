@@ -61,17 +61,23 @@ void agregarcontacto()
 			printf("Puerto no válido\n");
 			agregarcontacto();
 		}
-		printf("Inserte la direccion IP del contacto: ");
-		scanf("%s",&var.dir_Ip);
-		int aux;
-		struct sockaddr_in auxcliente;
-		aux = socket(AF_INET,SOCK_STREAM,0);
-		char str[INET_ADDRSTRLEN];
-		if(inet_pton(AF_INET, var.dir_Ip, &(auxcliente.sin_addr)) <= 0){
+		else{
+			printf("Inserte la direccion IP del contacto: ");
+		    scanf("%s",&var.dir_Ip);
+		    printf("Inserte la direccion IP del contacto: ");
+			scanf("%s",&var.dir_Ip);
+			int aux;
+			struct sockaddr_in auxcliente;
+			aux = socket(AF_INET,SOCK_STREAM,0);
+			char str[INET_ADDRSTRLEN];
+			if(inet_pton(AF_INET, var.dir_Ip, &(auxcliente.sin_addr)) <= 0){
 			printf("IP inválida\n");
 			agregarcontacto();
-		}
-		leerarchivo(var);
+			}
+			else{
+				leerarchivo(var);
+			}
+	    }
 }
 
 char eliminarcontacto()
@@ -122,6 +128,7 @@ fclose(archivo);
 fclose(dest);
 remove ("Contactos.txt"); //borramos el fichero de origen
 rename("aux.txt","Contactos.txt");// aca renombramos el archivo al original
+return 0;
 }
 // fin de la funcionalidad
 
@@ -253,13 +260,17 @@ int cliente(int puerto, char ip[100])
   
  }
  if(fork()){
-
 	while(1){
 		recv(sock,datosrecibidos,sizeof(datosrecibidos),0);
+		if(datosrecibidos[0]=='q'){
+			break;
+		}
 		printf("\r");
 		printf("%s mensaje: %s %s\n",mezcla,datosrecibidos,normal);
 		
 	}
+	exit(1);
+	menu();
 }
 
  else{
@@ -278,11 +289,10 @@ int cliente(int puerto, char ip[100])
 	}
 
 }
-
 return 0;
 
 }
 		 
-main(){
+void main(){
 	menu();
 }
