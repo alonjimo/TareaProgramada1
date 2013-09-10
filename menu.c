@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+void intervenir(char carac[100], int puerto, int ip);
+
 struct contacto{
 	char usuario[15];
 	int puerto;
@@ -51,8 +53,8 @@ int valor;
 int valor2;
 char caden;
 int modificado = 0;
-char adena[100];
 int valoracion=0;
+char adena[100];
 printf("introduzca nombre del contacto a eliminar: ");
 scanf("%s",contacto);
 FILE *archivo;
@@ -62,16 +64,11 @@ dest = fopen ("aux.txt", "w");// archivo a modificar
 if (archivo ==NULL)
 {
 printf("\Error de apertura del archivo.\n\n");
-menu();
 }
 while (!feof(archivo)){
 
 valoracion=fscanf(archivo,"%[a-zA-Z],%d,%d\n",cadena,&valor,&valor2);
-if (valoracion!=1){
-printf("Error lectura");
-menu();
-break;
-}
+
 
 if (strcmp (cadena, contacto) != 0)
 { 
@@ -95,7 +92,6 @@ if (strcmp (cadena, contacto) == 0)
 
 
 
-
 }
 fclose(archivo);
 fclose(dest);
@@ -107,9 +103,7 @@ rename("aux.txt","Contactos.txt");// aca renombramos el archivo al original
 
 
 
-
-
-char buscarcontacto()
+void enviarmensaje()
 {
 
 char contacto[15];
@@ -118,9 +112,9 @@ int valor;
 int valor2;
 char caden;
 int modificado = 0;
-char adena[100];
 int valoracion=0;
-printf("introduzca nombre del contacto a eliminar: ");
+char adena[100];
+printf("introduzca nombre del contacto al que desea enviar el  mensaje: ");
 scanf("%s",contacto);
 FILE *archivo;
 FILE *dest;
@@ -129,36 +123,17 @@ dest = fopen ("aux.txt", "w");// archivo a modificar
 if (archivo ==NULL)
 {
 printf("\Error de apertura del archivo.\n\n");
-menu();
 }
 while (!feof(archivo)){
 
 valoracion=fscanf(archivo,"%[a-zA-Z],%d,%d\n",cadena,&valor,&valor2);
-if (valoracion!=1){
-printf("Error lectura");
-menu();
-break;
-}
-
 if (strcmp (cadena, contacto) == 0)
 { 
   
-  char buffer[50];
-  char buf[50];
-  sprintf( buffer, "%d", valor );
-  strcat(cadena, ",");
-  strcat(cadena, buffer);
-  strcat(cadena, ",");
-  sprintf( buf, "%d", valor2 );
-  strcat(cadena, buf);
-  strcat(cadena, "\n");
-  return cadena;
+intervenir(cadena,valor,valor2);  
   
 
 }
-if (strcmp (cadena, contacto) == 0)
-{ printf("contacto eliminado");
- }
 
 
 
@@ -166,10 +141,19 @@ if (strcmp (cadena, contacto) == 0)
 }
 fclose(archivo);
 fclose(dest);
-remove ("Contactos.txt"); //borramos el fichero de origen
-rename("aux.txt","Contactos.txt");// aca renombramos el archivo al original
 }// fin de la funcionalidad
 
+
+
+
+void intervenir(char carac[100], int puerto, int ip)
+
+{
+printf("%s",carac); 
+printf("%d",puerto);
+printf("%d",ip); 
+
+}
 
 
 
@@ -225,8 +209,7 @@ void menu()
           agregarcontacto();           
           break;
      case 2:
-          buscarcont
-          printf("enviar mensaje\n");
+          enviarmensaje();
           break;
      case 3:
           eliminarcontacto();
