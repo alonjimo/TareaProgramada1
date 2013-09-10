@@ -29,7 +29,7 @@ const char * const normal = "\033[1;34m ";
     }
 
  servidor.sin_family = AF_INET;
- servidor.sin_port = htons(9005);
+ servidor.sin_port = htons(4001);
  servidor.sin_addr.s_addr = INADDR_ANY;
  bzero(&(servidor.sin_zero),8);
 
@@ -66,7 +66,6 @@ perror("envio fallido\n");
 close(misock);
 exit(1);
 }
-printf("enviado con exito \n");
  
 }
 }
